@@ -1,9 +1,11 @@
 // Listen for submit
 document.getElementById("loan-form").addEventListener('submit', function (e) {
-  // Hide results
+  // Hide results and show loader
   document.getElementById('results').style.display = 'none';
-  // Show loader
   document.getElementById('loading').style.display = 'block';
+
+  // Clear errors
+  clearError();
 
   setTimeout(calculateResults, '2000');
   e.preventDefault()
@@ -32,9 +34,8 @@ function calculateResults() {
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
-    // Show results
+    // Show results & hide loader
     document.getElementById('results').style.display = 'block';
-    // Hide loader
     document.getElementById('loading').style.display = 'none';
   } else {
     showError('Please check your numbers.');
@@ -43,9 +44,8 @@ function calculateResults() {
 
 // Show Error
 function showError(error) {
-  // Hide results
+  // Hide results and loader
   document.getElementById('results').style.display = 'none';
-  // Hide loader
   document.getElementById('loading').style.display = 'none';
 
   // create div
@@ -53,7 +53,7 @@ function showError(error) {
 
   // get elements
   const card = document.querySelector('.card');
-  const heading = document.querySelector('.heading');
+  const loading = document.querySelector('#loading');
 
   // add class
   errorDiv.className = 'alert alert-danger';
@@ -61,14 +61,12 @@ function showError(error) {
   // create text node and append to div
   errorDiv.appendChild(document.createTextNode(error));
 
-  // insert error above heading
-  card.insertBefore(errorDiv, heading);
-
-  // clear error after 3 seconds
-  setTimeout(clearError, 3000);
+  // insert error above loading
+  card.insertBefore(errorDiv, loading);
 }
 
 // Clear error
 function clearError() {
-  document.querySelector('.alert').remove();
+  alert = document.querySelector('.alert');
+  if (alert) alert.remove();
 }
